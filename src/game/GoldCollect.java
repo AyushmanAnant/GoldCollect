@@ -10,15 +10,16 @@ NOTE: This class is the metaphorical "main method" of your program,
 import java.awt.*;
 import java.awt.event.*;
 
-class YourGameName extends Game {
+class GoldCollect extends Game {
 	static int counter = 0;
 
   public YourGameName() {
-    super("YourGameName!",800,600);
+    super("GoldCollect!",800,600);
     this.setFocusable(true);
 	this.requestFocus();
   }
-  
+
+  //Game Implementation: 
 	public void paint(Graphics brush) {
     	brush.setColor(Color.black);
     	brush.fillRect(0,0,width,height);
@@ -34,5 +35,5 @@ class YourGameName extends Game {
 	public static void main (String[] args) {
    		YourGameName a = new YourGameName();
 		a.repaint();
-  }
+  } 
 }
