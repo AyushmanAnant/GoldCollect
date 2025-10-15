@@ -26,13 +26,13 @@ class Polygon {
     rotation = inRotation;
     
     // First, we find the shape's top-most left-most boundary, its origin.
-    Point origin = shape[0].clone();
-    for (Point p : shape) {
-      if (p.x < origin.x) origin.x = p.x;
-      if (p.y < origin.y) origin.y = p.y;
-    }
-    
-    // Then, we orient all of its points relative to the real origin.
+Point origin = shape[0].clone();
+for (Point p : shape) {
+  if (p.x < origin.x) origin.x = p.x;
+  if (p.y < origin.y) origin.y = p.y;
+}
+
+// Then, we orient all of its points relative to the real origin.
     for (Point p : shape) {
       p.x -= origin.x;
       p.y -= origin.y;

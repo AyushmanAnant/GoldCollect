@@ -1,51 +1,45 @@
-import java.awt.*; 
+package game;
 
-public class Obstacle extends Polygon {
-    
-    //Color sets a specific color to it
-    private Color color; 
-    //Active boolean checks if the obstacle is present in the game
-    private boolean active; 
+import java.awt.*;
+import java.util.Random;
 
-    public Obstacle(Point[] shape, Point position, double rotation, Color color) {
-        super(shape, position, rotation);
-        this.color = color; 
-        //Default setting for active is true
-        this.active = true; 
+/**
+ * Class representing an obstacle in the game.
+ */
+class Obstacle implements GameObject {
+    protected Polygon shape;
+    private ObstacleType type;
+    private static final Random random = new Random();
+
+    public Obstacle(Point position, ObstacleType type) {
+        Point[] points = {
+            new Point(0, 0),
+            new Point((int)(15 * 1.2), 0),  // Scaled up by 1.2
+            new Point((int)(7.5 * 1.2), (int)(15 * 1.2))
+        };
+        this.shape = new Polygon(points, position, random.nextInt(360)); // Random initial rotation
+        this.type = type;
     }
 
-    public void paint(Graphics brush) {
-        //Checking if the obstacle is active in the session
-        if(active == false ) {
-            //Likewise returnin gfrom the method 
-            return; 
-        }
-
-        brush.setColor(color);
-        Point[] points = getPoints();
-        int[] x = new int[points.length];
-        int[] y = new int[points.length];
-        for (int i = 0; i < points.length; i++) {
-            x[i] = (int) points[i].x;
-            y[i] = (int) points[i].y;
-        }
-        brush.fillPolygon(x, y, points.length);
-        
+    @Override
+    public void draw(Graphics brush) {
+        brush.setColor(type.getColor());
+        Point[] pts = shape.getPoints();
+        int[] x = new int[pts.length], y = new int[pts.length];
+        for (int i = 0; i < pts.length; i++) { x[i] = (int)pts[i].x; y[i] = (int)pts[i].y; }
+        brush.fillPolygon(x, y, pts.length);
     }
 
-    //Deactivate method changes the active status to false
-    public void deactivate() {
-        this.active = false;
+    @Override
+    public void update(double deltaTime) {
+        // No rotation for obstacles in bare bones
     }
 
-    //Activate method changes the active status to true
-    public void activate() {
-        this.active = true; 
-    }
+    @Override
+    public Point getPosition() { return shape.position; }
 
-    //getActive returns the active status of the obstacle
-    public boolean getActive() {
-        return this.active; 
-    }
+    @Override
+    public Polygon getShape() { return shape; } // Added to comply with interface
 
+    public int getPenalty() { return type.getPenalty(); }
 }
