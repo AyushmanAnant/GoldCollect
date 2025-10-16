@@ -16,18 +16,34 @@ class GoldCollect extends Game {
     private int score = 0;
     private long lastUpdate = System.currentTimeMillis();
     private Random random = new Random();
-    private long startTime = System.currentTimeMillis(); // Track game start time
+    private long startTime = System.currentTimeMillis(); //Track game start time
 
-    // Inner class for Timer
+    //Inner class for Timer
     private class Timer {
         private long start = System.currentTimeMillis();
+        /**
+         * Checks if the specified duration has elapsed.
+         * @param duration The duration in milliseconds
+         * @return true if time is up, false otherwise
+         */
         public boolean isTimeUp(long duration) { return System.currentTimeMillis() - start > duration; }
+        /**
+         * Resets the timer to the current time.
+         */
         public void reset() { start = System.currentTimeMillis(); }
     }
 
-    // Inner class for ScoreTracker
+    //Inner class for ScoreTracker
     private class ScoreTracker {
+        /**
+         * Updates the score by the given delta.
+         * @param delta The amount to add to the score
+         */
         public void updateScore(int delta) { score += delta; }
+        /**
+         * Returns the current score.
+         * @return The current score value
+         */
         public int getScore() { return score; }
     }
 
@@ -40,7 +56,7 @@ class GoldCollect extends Game {
         player = new Player(new Point(400, 300));
         collectibles.add(new Collectible(new Point(100, 100), JewelType.GOLD));
         obstacles.add(new Obstacle(new Point(200, 200), ObstacleType.SPIKE));
-
+        //Anonymous class
         this.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent e) { updateMovement(e, true); }
             public void keyReleased(KeyEvent e) { updateMovement(e, false); }
@@ -61,14 +77,14 @@ class GoldCollect extends Game {
         long now = System.currentTimeMillis();
         double deltaTime = (now - lastUpdate) / 1000.0;
         lastUpdate = now;
-        long elapsedTime = (now - startTime) / 1000; // Elapsed time in seconds
+        long elapsedTime = (now - startTime) / 1000; //Elapsed time in seconds
 
-        if (elapsedTime >= 60) { // Game ends at 60 seconds
+        if (elapsedTime >= 60) { //Game ends at 60 seconds
             brush.setColor(Color.BLACK);
             brush.fillRect(0, 0, width, height);
             brush.setColor(Color.WHITE);
-            brush.drawString("Final Score: " + scoreTracker.getScore(), width / 2 - 50, height / 2); // Center the text
-            return; // Stop further rendering and updates
+            brush.drawString("Final Score: " + scoreTracker.getScore(), width / 2 - 50, height / 2); //Center the text
+            return; //Stop further rendering
         }
 
         brush.setColor(Color.BLACK);
@@ -77,6 +93,7 @@ class GoldCollect extends Game {
         player.update(deltaTime);
         player.draw(brush);
 
+        //lambda 1
         collectibles.removeIf(c -> {
             c.update(deltaTime);
             c.draw(brush);
@@ -86,7 +103,8 @@ class GoldCollect extends Game {
             }
             return false;
         });
-
+        
+        //lambda 2
         obstacles.removeIf(o -> {
             o.update(deltaTime);
             o.draw(brush);
@@ -98,17 +116,17 @@ class GoldCollect extends Game {
         });
 
         if (spawnTimer.isTimeUp(1000)) {
-            int rand = random.nextInt(100); // 0-99
-            JewelType jewel = rand < 65 ? JewelType.GOLD : (rand < 90 ? JewelType.DIAMOND : JewelType.EMERALD); // 65% gold, 25% diamond, 10% emerald
+            int rand = random.nextInt(100); //0-99
+            JewelType jewel = rand < 65 ? JewelType.GOLD : (rand < 90 ? JewelType.DIAMOND : JewelType.EMERALD); //65% gold, 25% diamond, 10% emerald
             collectibles.add(new Collectible(new Point((int)(Math.random()*700)+50, (int)(Math.random()*500)+50), jewel));
             obstacles.add(new Obstacle(new Point((int)(Math.random()*700)+50, (int)(Math.random()*500)+50), ObstacleType.SPIKE));
             spawnTimer.reset();
         }
 
-        // Display timer in top right corner
+        //Display timer in top right corner
         brush.setColor(Color.WHITE);
         brush.drawString("Time: " + elapsedTime + "s", width - 60, 20);
-
+        //Display score in top left corner
         brush.drawString("Score: " + scoreTracker.getScore(), 10, 20);
     }
 
