@@ -10,12 +10,19 @@ import java.util.Random;
  * Main game class for GoldCollect.
  */
 class GoldCollect extends Game {
+    //variable to store player name
     private Player player;
+    //variable to store list of collectibles 
     private List<Collectible> collectibles = new ArrayList<>();
+    //variable to store list of obstacles 
     private List<Obstacle> obstacles = new ArrayList<>();
+    //variable to store player score 
     private int score = 0;
+    //variable to track last update time 
     private long lastUpdate = System.currentTimeMillis();
+    //variable to generate random numbers 
     private Random random = new Random();
+    //variable to store start time of the game
     private long startTime = System.currentTimeMillis(); //Track game start time
 
     //Inner class for Timer
@@ -50,16 +57,18 @@ class GoldCollect extends Game {
     private ScoreTracker scoreTracker = new ScoreTracker();
     private Timer spawnTimer = new Timer();
 
+    //returns nothing, constructor to initialize the game 
     public GoldCollect() {
         super("GoldCollect!", 800, 600);
         this.setFocusable(true);
         player = new Player(new Point(400, 300));
         collectibles.add(new Collectible(new Point(100, 100), JewelType.GOLD));
         obstacles.add(new Obstacle(new Point(200, 200), ObstacleType.SPIKE));
-        //Anonymous class
+        //Anonymous class for key events 
         this.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent e) { updateMovement(e, true); }
             public void keyReleased(KeyEvent e) { updateMovement(e, false); }
+            //returns nothing, updates movement directions (according to WASD controls) 
             private void updateMovement(KeyEvent e, boolean pressed) {
                 int key = e.getKeyCode();
                 boolean up = player.up, down = player.down, left = player.left, right = player.right;
@@ -72,11 +81,15 @@ class GoldCollect extends Game {
         });
     }
 
+    //returns nothing, handles drawing and logic 
     @Override
     public void paint(Graphics brush) {
+        //variable to store current time
         long now = System.currentTimeMillis();
+        //variable to store time difference 
         double deltaTime = (now - lastUpdate) / 1000.0;
         lastUpdate = now;
+        //varaible to store elapsed time in seconds 
         long elapsedTime = (now - startTime) / 1000; //Elapsed time in seconds
 
         if (elapsedTime >= 60) { //Game ends at 60 seconds
