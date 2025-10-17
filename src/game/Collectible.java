@@ -7,9 +7,13 @@ import java.util.Random;
  * Class representing a collectible jewel in the game.
  */
 class Collectible implements GameObject {
+    //variable to store the shape of the collectible 
     protected Polygon shape;
+    //variable to store the jeweltype
     private JewelType type;
+    //variable to store the rotation speed of the collectible 
     private double rotationSpeed = 5.0;
+    //variable to generate random values for rotation or placement  
     private static final Random random = new Random();
 
     /**
