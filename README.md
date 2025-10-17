@@ -1,2 +1,2 @@
 # GoldCollect
-Code Implementation 
+Code Implementation by Ayushman, Chetan, and Preston 
