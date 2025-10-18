@@ -16,38 +16,35 @@ NOTE: You don't need to worry about the "magic math" details.
 */
 
 class Polygon {
-  //variable to store the array of points defining a shape 
-  private Point[] shape;  
-  //variable to store the position offset of an object 
-  public Point position;  
-  //ariable to store the rotation angle in degrees 
-  public double rotation; 
+  private Point[] shape;   // An array of points.
+  public Point position;   // The offset mentioned above.
+  public double rotation; // Zero degrees is due east.
   
   public Polygon(Point[] inShape, Point inPosition, double inRotation) {
     shape = inShape;
     position = inPosition;
     rotation = inRotation;
     
-    //First, we find the shape's top-most left-most boundary, its origin.
-Point origin = shape[0].clone();
-for (Point p : shape) {
-  if (p.x < origin.x) origin.x = p.x;
-  if (p.y < origin.y) origin.y = p.y;
-}
-
-    //Then, we orient all of its points relative to the real origin.
+    // First, we find the shape's top-most left-most boundary, its origin.
+    Point origin = shape[0].clone();
+    for (Point p : shape) {
+      if (p.x < origin.x) origin.x = p.x;
+      if (p.y < origin.y) origin.y = p.y;
+    }
+    
+    // Then, we orient all of its points relative to the real origin.
     for (Point p : shape) {
       p.x -= origin.x;
       p.y -= origin.y;
     }
   }
   
-  //"getPoints" applies the rotation and offset to the shape of the polygon.
+  // "getPoints" applies the rotation and offset to the shape of the polygon.
   public Point[] getPoints() {
     Point center = findCenter();
     Point[] points = new Point[shape.length];
     for (int i = 0; i < shape.length; i++) {
-  //for (Point p : shape) {
+//    for (Point p : shape) {
       Point p = shape[i];
       double x = ((p.x-center.x) * Math.cos(Math.toRadians(rotation)))
                - ((p.y-center.y) * Math.sin(Math.toRadians(rotation)))
@@ -60,7 +57,7 @@ for (Point p : shape) {
     return points;
   }
   
-  //"contains" implements some magical math (i.e. the ray-casting algorithm).
+  // "contains" implements some magical math (i.e. the ray-casting algorithm).
   public boolean contains(Point point) {
     Point[] points = getPoints();
     double crossingNumber = 0;
@@ -83,7 +80,7 @@ for (Point p : shape) {
   methods in this class that are not private. They can't be used anywhere else.
   */
   
-  //"findArea" implements some more magic math.
+  // "findArea" implements some more magic math.
   private double findArea() {
     double sum = 0;
     for (int i = 0, j = 1; i < shape.length; i++, j=(j+1)%shape.length) {
@@ -92,7 +89,7 @@ for (Point p : shape) {
     return Math.abs(sum/2);
   }
   
-  //"findCenter" implements another bit of math.
+  // "findCenter" implements another bit of math.
   private Point findCenter() {
     Point sum = new Point(0,0);
     for (int i = 0, j = 1; i < shape.length; i++, j=(j+1)%shape.length) {
